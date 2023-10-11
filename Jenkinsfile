@@ -4,8 +4,8 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh 'docker build -t DjangoPolls .'
-        sh 'docker tag DjangoPolls $DOCKER_BFLASK_IMAGE'
+        sh 'docker build -t djangopolls .'
+        sh 'docker tag djangopolls $DOCKER_BFLASK_IMAGE'
       }
     }
     stage('Deploy') {
