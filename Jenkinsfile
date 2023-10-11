@@ -8,7 +8,7 @@ pipeline {
         sh 'docker tag djangopolls $DOCKER_BFLASK_IMAGE'
       }
     }
-    stage('Deploy') {
+    stage('Push to docker hub') {
       steps {
         withCredentials([usernamePassword(credentialsId: "${DOCKER_REGISTRY_CREDS}", passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
 
@@ -17,6 +17,13 @@ pipeline {
           }
         }
       }
+    stage("Deploy"){
+    steps{
+        echo "Deploying container..."
+        sh "docker-compose down && docker-compose up -d"
+    }
+
+    }
     }
   post {
     always {
