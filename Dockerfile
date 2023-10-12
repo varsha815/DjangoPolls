@@ -19,11 +19,10 @@ RUN python manage.py makemigrations
 RUN python manage.py migrate
 RUN echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('varshas', 'varsha.s8755@gmail.com', 'varsha.s8755@gmail.com')" | python manage.py shell
 
-# Collect static files
-RUN python manage.py collectstatic --noinput
+
 
 # Expose the port Gunicorn will run on
-EXPOSE 6000
+EXPOSE 5000
 
 # Define the command to start Gunicorn
-CMD gunicorn your_project.wsgi:application --bind 0.0.0.0:6000
+CMD gunicorn your_project.wsgi:application --bind 0.0.0.0:5000
