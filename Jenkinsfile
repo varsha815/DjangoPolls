@@ -1,6 +1,5 @@
 pipeline {
     agent any
-
     stages {
         stage('Build Docker Image') {
             steps {
@@ -21,7 +20,7 @@ pipeline {
                     sh 'docker push your-registry/my-docker-image'
 
                     // Run the Docker container
-                    sh 'docker run -d -p 8080:80 your-registry/my-docker-image'
+                    sh 'docker run -d -p 6000:80 your-registry/my-docker-image'
                 }
             }
         }

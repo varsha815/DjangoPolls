@@ -20,7 +20,7 @@ RUN python manage.py migrate
 RUN echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('varshas', 'varsha.s8755@gmail.com', 'varsha.s8755@gmail.com')" | python manage.py shell
 
 # Expose the port the app runs on
-EXPOSE 8000
+EXPOSE 6000
 
 # Run the Django development server
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:6000"]
