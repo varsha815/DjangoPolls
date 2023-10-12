@@ -1,28 +1,26 @@
 pipeline {
-    agent any
-    stages {
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    // Build Docker image
-                    sh 'docker build -t my-docker-image .'
-                }
-            }
-        }
+  agent any
 
-        stage('Deploy Docker Image') {
-            steps {
-                script {
-                    // Tag the Docker image
-                    sh 'docker tag my-docker-image your-registry/my-docker-image'
-
-                    // Push the Docker image to a registry
-                    sh 'docker push your-registry/my-docker-image'
-
-                    // Run the Docker container
-                    sh 'docker run -d -p 6000:80 your-registry/my-docker-image'
-                }
-            }
-        }
+  stages {
+    stage('Build') {
+      steps {
+        sh 'docker build -t my-docker-image .'
+        sh 'docker tag my-docker-image $DOCKER_BFLASK_IMAGE'
+      }
     }
+
+    stage('Deploy') {
+      steps {
+        withCredentials([usernamePassword(credentialsId: "${DOCKER_REGISTRY_CREDS}", passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+          sh "echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin docker.io"
+          sh 'docker push $DOCKER_BFLASK_IMAGE'
+        }
+      }
+    }
+  }
+  post {
+    always {
+      sh 'docker logout'
+    }
+  }
 }
