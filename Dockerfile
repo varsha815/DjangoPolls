@@ -9,7 +9,7 @@ ENV PYTHONUNBUFFERED 1
 WORKDIR /app
 
 # Install dependencies
-RUN pip install asgiref==3.3.1 Django==3.1.14 pytz==2020.5 sqlparse==0.4.4
+RUN pip install asgiref==3.3.1 Django==3.1.14 pytz==2020.5 sqlparse==0.4.4 gunicorn
 
 # Copy the current directory contents into the container at /app
 COPY . /app/
