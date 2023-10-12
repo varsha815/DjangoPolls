@@ -19,8 +19,11 @@ RUN python manage.py makemigrations
 RUN python manage.py migrate
 RUN echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('varshas', 'varsha.s8755@gmail.com', 'varsha.s8755@gmail.com')" | python manage.py shell
 
-# Expose the port the app runs on
+# Collect static files
+RUN python manage.py collectstatic --noinput
+
+# Expose the port Gunicorn will run on
 EXPOSE 6000
 
-# Run the Django development server
-CMD ["python", "manage.py", "runserver", "0.0.0.0:6000"]
+# Define the command to start Gunicorn
+CMD gunicorn your_project.wsgi:application --bind 0.0.0.0:6000
